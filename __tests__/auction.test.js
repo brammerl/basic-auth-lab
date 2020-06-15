@@ -95,4 +95,50 @@ describe('auth routes', () => {
         });
       });
   });
+
+  it(`gets all auctions via GET`, async() => {
+    await Auction.create({
+      user: user._id,
+      title: 'auction title',
+      description: 'auction description',
+      quantity: 1,
+      endDate: Date()
+    }, 
+    {
+      user: user._id,
+      title: 'auction title2',
+      description: 'auction description2',
+      quantity: 2,
+      endDate: Date()
+    });
+
+    return request(app)
+      .get('/api/v1/auctions/')
+      .then(res => {
+        expect(res.body).toEqual([
+          {
+            _id: expect.anything(),
+            user: {
+              _id: user.id
+            },
+            title: 'auction title',
+            description: 'auction description',
+            quantity: 1,
+            endDate: expect.anything(),
+            __v: 0
+          }, 
+          {
+            _id: expect.anything(),
+            user: {
+              _id: user.id
+            },
+            title: 'auction title2',
+            description: 'auction description2',
+            quantity: 2,
+            endDate: expect.anything(),
+            __v: 0
+          }
+        ]);
+      });
+  });
 });
