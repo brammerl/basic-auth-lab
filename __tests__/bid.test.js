@@ -75,7 +75,7 @@ describe('auth routes', () => {
       });
   });
 
-  it('gets by id via GET', async() => {
+  it('gets by id via GET', () => {
     return request(app)
       .get(`/api/v1/bids/${bid._id}`)
       .then(res => {
@@ -91,4 +91,19 @@ describe('auth routes', () => {
       });
   });
     
+  it('deletes by id via DElETE', () => {
+    return request(app)
+      .delete(`/api/v1/bids/${bid._id}`)
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.anything(),
+          auction: auction.id,
+          user: user.id,
+          price: 10,
+          quantity: 1,
+          accepted: true,
+          __v: 0
+        });
+      });
+  });
 });
