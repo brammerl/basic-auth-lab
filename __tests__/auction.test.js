@@ -36,6 +36,7 @@ describe('auth routes', () => {
   it(`creates an auction via POST`, () => {
     return request(app)
       .post(`/api/v1/auctions/`)
+      .auth('test@test.com', 'testpassword')
       .send({
         user: user._id,
         title: 'auction title',
@@ -75,6 +76,7 @@ describe('auth routes', () => {
 
     return request(app)
       .get(`/api/v1/auctions/${auction._id}`)
+      .auth('test@test.com', 'testpassword')
       .then(res => {
         expect(res.body).toEqual({
           _id: expect.anything(),
@@ -114,6 +116,7 @@ describe('auth routes', () => {
 
     return request(app)
       .get('/api/v1/auctions/')
+      .auth('test@test.com', 'testpassword')
       .then(res => {
         expect(res.body).toEqual([
           {

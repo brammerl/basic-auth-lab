@@ -55,6 +55,7 @@ describe('auth routes', () => {
   it('creates a bid via POST', () => {
     return request(app)
       .post(`/api/v1/bids/`)
+      .auth('test@test.com', 'testpassword')
       .send({
         auction: auction._id,
         user: user._id,
@@ -78,6 +79,7 @@ describe('auth routes', () => {
   it('gets by id via GET', () => {
     return request(app)
       .get(`/api/v1/bids/${bid._id}`)
+      .auth('test@test.com', 'testpassword')
       .then(res => {
         expect(res.body).toEqual({
           _id: expect.anything(),
@@ -94,6 +96,7 @@ describe('auth routes', () => {
   it('deletes by id via DElETE', () => {
     return request(app)
       .delete(`/api/v1/bids/${bid._id}`)
+      .auth('test@test.com', 'testpassword')
       .then(res => {
         expect(res.body).toEqual({
           _id: expect.anything(),
