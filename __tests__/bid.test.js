@@ -22,6 +22,7 @@ describe('auth routes', () => {
 
   let user;
   let auction;
+  let bid;
   beforeEach(async() => {
     user = await User.create({
       email: `test@test.com`,
@@ -35,6 +36,15 @@ describe('auth routes', () => {
       quantity: 1,
       endDate: Date()
     });
+
+    bid = await Bid.create({
+      auction: auction.id,
+      user: user._id,
+      price: 10,
+      quantity: 1,
+      accepted: true
+    });
+
   });
 
   afterAll(async() => {
@@ -64,4 +74,21 @@ describe('auth routes', () => {
         });
       });
   });
+
+  it('gets by id via GET', async() => {
+    return request(app)
+      .get(`/api/v1/bids/${bid._id}`)
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.anything(),
+          auction: auction.id,
+          user: user.id,
+          price: 10,
+          quantity: 1,
+          accepted: true,
+          __v: 0
+        });
+      });
+  });
+    
 });
